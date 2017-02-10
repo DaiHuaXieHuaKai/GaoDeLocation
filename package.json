@@ -1,5 +1,5 @@
 {
-  "name": "GaoDeLocation",
+  "name": "cordova-plugin-gaodelocation",
   "version": "1.0.0",
   "description": "Use of a gold maps to locate, to obtain location information",
   "cordova": {
