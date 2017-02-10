@@ -1,0 +1,25 @@
+{
+  "name": "GaoDeLocation",
+  "version": "1.0.0",
+  "description": "Use of a gold maps to locate, to obtain location information",
+  "cordova": {
+    "id": "com.zhaoying.GaoDeLocation",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaiHuaXieHuaKai/GaoDeLocation.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android"
+  ],
+  "author": "zhaoying",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaiHuaXieHuaKai/GaoDeLocation/issues"
+  },
+  "homepage": "https://github.com/DaiHuaXieHuaKai/GaoDeLocation#readme"
+}

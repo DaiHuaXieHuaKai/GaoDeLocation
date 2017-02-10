@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="com.zhaoying.GaoDeLocation" version="1.0.0" xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>GaoDeLocation</name>
+    <js-module name="GaoDe" src="www/GaoDeLocation.js">
+        <clobbers target="GaoDe"/>
+    </js-module>
+
+    <preference name="API_KEY" />
+
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="GaoDeLocation">
+                <param name="android-package" value="com.zhaoying.GaoDeLocation.GaoDeLocation"/>
+            </feature>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <!--在AndroidManifest.xml的application标签中配置Key：-->
+            <meta-data android:name="com.amap.api.v2.apikey" android:value="$API_KEY">
+            </meta-data>
+            <!--在application标签中声明service组件：-->
+            <service android:name="com.amap.api.location.APSService"></service>
+        </config-file>
+
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <!--用于进行网络定位-->
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+            <!--用于访问GPS定位-->
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+            <!--获取运营商信息，用于支持提供运营商信息相关的接口-->
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+            <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+            <!--这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+            <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
+            <!--用于访问网络，网络定位需要上网-->
+            <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+            <!--用于读取手机当前的状态-->
+            <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+            <!--写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据-->
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+            <!--用于申请调用A-GPS模块-->
+            <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
+            <!--用于申请获取蓝牙信息进行室内定位-->
+            <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
+        </config-file>
+
+        <!--此处需要将-->
+        <!--<source-file src="src/android/GaoDeLocation.java" target-dir="src/com/zhaoying/GaoDeLocation/GaoDeLocation"/>-->
+        <!--修改为-->
+
+        <source-file src="src/android/GaoDeLocation.java" target-dir="src/com/zhaoying/GaoDeLocation"/>
+
+        <source-file src="libs/android/AMap_Location_V3.3.0.jar" target-dir="libs" />
+
+
+    </platform>
+</plugin>
