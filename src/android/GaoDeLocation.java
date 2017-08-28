@@ -8,13 +8,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationMode;
 import com.amap.api.location.AMapLocationClientOption.AMapLocationProtocol;
 import com.amap.api.location.AMapLocationListener;
+
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.pm.PackageManager;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author zhaoying
@@ -24,6 +31,23 @@ public class GaoDeLocation extends CordovaPlugin {
     public AMapLocationClient locationClient = null;
     //声明定位参数
     public AMapLocationClientOption locationOption = null;
+
+    //权限申请码
+    private static final int PERMISSION_REQUEST_CODE = 500;
+
+    /**
+     * 需要进行检测的权限数组
+     */
+    protected String[] needPermissions = {
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.READ_PHONE_STATE
+    };
+
+    private static final int PERMISSON_REQUEST_CODE = 0;
+
     /**
      * JS回调接口对象
      */
@@ -39,11 +63,18 @@ public class GaoDeLocation extends CordovaPlugin {
             PluginResult pluginResult = new PluginResult(PluginResult.Status.NO_RESULT);
             pluginResult.setKeepCallback(true);
             cb.sendPluginResult(pluginResult);
-            this.getCurrentPosition();
+            if(this.isNeedCheckPermissions(needPermissions)){
+                this.checkPermissions(needPermissions);
+            }else{
+                this.getCurrentPosition();
+            }
+
             return true;
         }
         return false;
     }
+
+
     /**
      * 获取定位
      *
@@ -69,6 +100,7 @@ public class GaoDeLocation extends CordovaPlugin {
         locationClient.setLocationOption(getDefaultOption());
         // 设置定位监听
         locationClient.setLocationListener(locationListener);
+
     }
 
     /**
@@ -143,7 +175,7 @@ public class GaoDeLocation extends CordovaPlugin {
                         json.put("detail", location.getLocationDetail());
                     }
                     //定位之后的回调时间
-                    json.put("backtime",System.currentTimeMillis());
+                    json.put("backtime", System.currentTimeMillis());
                 } else {
 
                 }
@@ -197,4 +229,68 @@ public class GaoDeLocation extends CordovaPlugin {
         }
     }
 
+
+    /**
+     * 判断是否需要检查权限
+     *
+     * @author zhaoying
+     */
+
+    private boolean isNeedCheckPermissions(String... permissions) {
+        List<String> needRequestPermissonList = findNeedPermissions(permissions);
+        if (null != needRequestPermissonList && needRequestPermissonList.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    /**
+     * 检查权限
+     *
+     * @author zhaoying
+     */
+    private void checkPermissions(String... permissions) {
+        try {
+            List<String> needRequestPermissonList = findNeedPermissions(permissions);
+            if (null != needRequestPermissonList && needRequestPermissonList.size() > 0) {
+                String[] array = needRequestPermissonList.toArray(new String[needRequestPermissonList.size()]);
+                cordova.requestPermissions(this, PERMISSION_REQUEST_CODE, array);
+            }
+        } catch (Throwable e) {
+
+        }
+    }
+
+    /**
+     * 获取需要获取权限的集合
+     *
+     * @author zhaoying
+     */
+    private List<String> findNeedPermissions(String[] permissions) {
+        List<String> needRequestPermissonList = new ArrayList<String>();
+        try {
+            for (String perm : permissions) {
+                if (!cordova.hasPermission(perm)) {
+                    needRequestPermissonList.add(perm);
+                }
+            }
+        } catch (Throwable e) {
+
+        }
+        return needRequestPermissonList;
+    }
+
+    /*
+    * 权限检查回调
+    *
+    * @author zhaoying
+    * */
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] paramArrayOfInt) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            this.getCurrentPosition();
+        }
+    }
 }

@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-gaodelocation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use of a gold maps to locate, to obtain location information",
   "cordova": {
     "id": "com.zhaoying.GaoDeLocation",
