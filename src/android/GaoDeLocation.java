@@ -287,7 +287,7 @@ public class GaoDeLocation extends CordovaPlugin {
     *
     * @author zhaoying
     * */
-    public void onRequestPermissionsResult(int requestCode,
+    public void onRequestPermissionResult(int requestCode,
                                            String[] permissions, int[] paramArrayOfInt) {
         if (requestCode == PERMISSION_REQUEST_CODE) {
             this.getCurrentPosition();
